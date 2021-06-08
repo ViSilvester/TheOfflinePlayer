@@ -38,135 +38,135 @@ class _PlayerViewState extends State<PlayerView> {
     return BlocBuilder<PlayerCubit, PlayerCubitState>(
       bloc: getIt<PlayerCubit>(),
       builder: (context, state) {
-        return Center(
-          child: Container(
-            child: Column(
-              children: [
-                Expanded(
-                  flex: 4,
-                  child: Container(
-                    color: Colors.white30,
-                    child: Icon(
-                      Icons.music_note,
-                      color: Colors.black26,
-                      size: 150,
-                    ),
-                  ),
-                ),
-                Container(
+        return Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Container(
                   width: double.infinity,
-                  child: StreamBuilder(
-                    stream: getIt<PlayerCubit>().currentTimeStream,
-                    builder: (
-                      BuildContext context,
-                      AsyncSnapshot<Duration> snapshot,
-                    ) {
-                      return Slider(
-                        min: 0,
-                        max: 1,
-                        value: snapshot.hasData &&
-                                state is PlayerCubitLoadSucessState
-                            ? getIt<PlayerCubit>().timeToProgress(snapshot.data)
-                            : 0,
-                        onChanged: (value) {
-                          if (state is PlayerCubitLoadSucessState) {
-                            getIt<PlayerCubit>().setProgress(value);
-                          }
-                        },
-                      );
-                    },
+                  color: Colors.black38,
+                  child: Icon(
+                    Icons.music_note,
+                    color: Colors.black26,
+                    size: 150,
                   ),
                 ),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Spacer(),
-                        ElevatedButton(
-                          onPressed: () {},
-                          child: Icon(
-                            Icons.shuffle,
+              ),
+              Container(
+                width: double.infinity,
+                child: StreamBuilder(
+                  stream: getIt<PlayerCubit>().currentTimeStream,
+                  builder: (
+                    BuildContext context,
+                    AsyncSnapshot<Duration> snapshot,
+                  ) {
+                    return Slider(
+                      min: 0,
+                      max: 1,
+                      value: snapshot.hasData &&
+                              state is PlayerCubitLoadSucessState
+                          ? getIt<PlayerCubit>().timeToProgress(snapshot.data)
+                          : 0,
+                      onChanged: (value) {
+                        if (state is PlayerCubitLoadSucessState) {
+                          getIt<PlayerCubit>().setProgress(value);
+                        }
+                      },
+                    );
+                  },
+                ),
+              ),
+              Container(
+                height: 96,
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Spacer(),
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: Icon(
+                          Icons.shuffle,
+                        ),
+                        style: ButtonStyle(
+                          overlayColor:
+                              MaterialStateProperty.all(Colors.transparent),
+                          elevation: MaterialStateProperty.all(0),
+                          backgroundColor: MaterialStateProperty.all(
+                            theme.scaffoldBackgroundColor,
                           ),
-                          style: ButtonStyle(
-                            overlayColor:
-                                MaterialStateProperty.all(Colors.transparent),
-                            elevation: MaterialStateProperty.all(0),
-                            backgroundColor: MaterialStateProperty.all(
-                              theme.scaffoldBackgroundColor,
-                            ),
-                            foregroundColor: MaterialStateProperty.all(
-                              Colors.black,
-                            ),
-                            shape: MaterialStateProperty.all(
-                              CircleBorder(),
-                            ),
+                          foregroundColor: MaterialStateProperty.all(
+                            Colors.black,
                           ),
-                        ),
-                        Container(
-                          width: 12,
-                        ),
-                        IconButton(
-                          iconSize: 48,
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.fast_rewind,
-                          ),
-                        ),
-                        Container(
-                          width: 12,
-                        ),
-                        buildPlayButton(
-                          context,
-                          getIt<PlayerCubit>(),
-                        ),
-                        Container(
-                          width: 12,
-                        ),
-                        IconButton(
-                          iconSize: 48,
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.fast_forward,
+                          shape: MaterialStateProperty.all(
+                            CircleBorder(),
                           ),
                         ),
-                        Container(
-                          width: 12,
+                      ),
+                      Container(
+                        width: 12,
+                      ),
+                      IconButton(
+                        iconSize: 48,
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.fast_rewind,
                         ),
-                        ElevatedButton(
-                          onPressed: () {
-                            setState(() {
-                              getIt<PlayerCubit>().toogleeLoopMode();
-                            });
-                          },
-                          child: Icon(
-                            Icons.repeat,
+                      ),
+                      Container(
+                        width: 12,
+                      ),
+                      buildPlayButton(
+                        context,
+                        getIt<PlayerCubit>(),
+                      ),
+                      Container(
+                        width: 12,
+                      ),
+                      IconButton(
+                        iconSize: 48,
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.fast_forward,
+                        ),
+                      ),
+                      Container(
+                        width: 12,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            getIt<PlayerCubit>().toogleeLoopMode();
+                          });
+                        },
+                        child: Icon(
+                          Icons.repeat,
+                        ),
+                        style: ButtonStyle(
+                          overlayColor:
+                              MaterialStateProperty.all(Colors.transparent),
+                          elevation: MaterialStateProperty.all(0),
+                          backgroundColor: MaterialStateProperty.all(
+                            theme.scaffoldBackgroundColor,
                           ),
-                          style: ButtonStyle(
-                            overlayColor:
-                                MaterialStateProperty.all(Colors.transparent),
-                            elevation: MaterialStateProperty.all(0),
-                            backgroundColor: MaterialStateProperty.all(
-                              theme.scaffoldBackgroundColor,
-                            ),
-                            foregroundColor: MaterialStateProperty.all(
-                              state.loopMode == LoopMode.loopOne
-                                  ? theme.accentColor
-                                  : Colors.black,
-                            ),
-                            shape: MaterialStateProperty.all(
-                              CircleBorder(),
-                            ),
+                          foregroundColor: MaterialStateProperty.all(
+                            state.loopMode == LoopMode.loopOne
+                                ? theme.accentColor
+                                : Colors.black,
+                          ),
+                          shape: MaterialStateProperty.all(
+                            CircleBorder(),
                           ),
                         ),
-                        Spacer(),
-                      ],
-                    ),
+                      ),
+                      Spacer(),
+                    ],
                   ),
-                )
-              ],
-            ),
+                ),
+              ),
+            ],
           ),
         );
       },

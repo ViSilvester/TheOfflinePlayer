@@ -18,7 +18,7 @@ class HomeViewState extends State<HomeView> {
   }
 
   Widget buildBody(BuildContext context) {
-    return Center(
+    return SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
         child: Column(
