@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:offline_player/views/musics_view/home_view/home_view.dart';
+import 'package:offline_player/views/home_view/home_view.dart';
 import 'package:offline_player/views/musics_view/musics_view.dart';
 import 'package:offline_player/views/player_view.dart/player_view.dart';
 import 'package:offline_player/views/playlists_view.dart';

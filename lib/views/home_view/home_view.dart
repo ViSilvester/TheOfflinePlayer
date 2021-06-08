@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:offline_player/config/getIt.dart';
 
@@ -327,7 +325,8 @@ class HomeViewState extends State<HomeView> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 OutlinedButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    await Future.delayed(Duration(milliseconds: 100));
                     Navigator.of(context).pushNamed('/musics');
                   },
                   style: OutlinedButton.styleFrom(

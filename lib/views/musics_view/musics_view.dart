@@ -14,8 +14,8 @@ class MusicsView extends StatefulWidget {
 class _MusicsViewState extends State<MusicsView> {
   @override
   void initState() {
-    getIt<FilePickerCubit>().loadFiles();
     super.initState();
+    getIt<FilePickerCubit>().loadFiles();
   }
 
   @override

@@ -34,6 +34,7 @@ class _PlayerViewState extends State<PlayerView> {
   }
 
   Widget buildBody(BuildContext context) {
+    var theme = getIt<ThemeData>();
     return BlocBuilder<PlayerCubit, PlayerCubitState>(
       bloc: getIt<PlayerCubit>(),
       builder: (context, state) {
@@ -54,14 +55,25 @@ class _PlayerViewState extends State<PlayerView> {
                 ),
                 Container(
                   width: double.infinity,
-                  child: Slider(
-                    min: 0,
-                    max: 1,
-                    value: value,
-                    onChanged: (value) {
-                      setState(() {
-                        this.value = value;
-                      });
+                  child: StreamBuilder(
+                    stream: getIt<PlayerCubit>().currentTimeStream,
+                    builder: (
+                      BuildContext context,
+                      AsyncSnapshot<Duration> snapshot,
+                    ) {
+                      return Slider(
+                        min: 0,
+                        max: 1,
+                        value: snapshot.hasData &&
+                                state is PlayerCubitLoadSucessState
+                            ? getIt<PlayerCubit>().timeToProgress(snapshot.data)
+                            : 0,
+                        onChanged: (value) {
+                          if (state is PlayerCubitLoadSucessState) {
+                            getIt<PlayerCubit>().setProgress(value);
+                          }
+                        },
+                      );
                     },
                   ),
                 ),
@@ -69,8 +81,32 @@ class _PlayerViewState extends State<PlayerView> {
                   flex: 1,
                   child: Container(
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Spacer(),
+                        ElevatedButton(
+                          onPressed: () {},
+                          child: Icon(
+                            Icons.shuffle,
+                          ),
+                          style: ButtonStyle(
+                            overlayColor:
+                                MaterialStateProperty.all(Colors.transparent),
+                            elevation: MaterialStateProperty.all(0),
+                            backgroundColor: MaterialStateProperty.all(
+                              theme.scaffoldBackgroundColor,
+                            ),
+                            foregroundColor: MaterialStateProperty.all(
+                              Colors.black,
+                            ),
+                            shape: MaterialStateProperty.all(
+                              CircleBorder(),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: 12,
+                        ),
                         IconButton(
                           iconSize: 48,
                           onPressed: () {},
@@ -79,20 +115,49 @@ class _PlayerViewState extends State<PlayerView> {
                           ),
                         ),
                         Container(
-                          width: 24,
+                          width: 12,
                         ),
                         buildPlayButton(
                           context,
                           getIt<PlayerCubit>(),
                         ),
                         Container(
-                          width: 24,
+                          width: 12,
                         ),
                         IconButton(
                           iconSize: 48,
                           onPressed: () {},
                           icon: Icon(
                             Icons.fast_forward,
+                          ),
+                        ),
+                        Container(
+                          width: 12,
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              getIt<PlayerCubit>().toogleeLoopMode();
+                            });
+                          },
+                          child: Icon(
+                            Icons.repeat,
+                          ),
+                          style: ButtonStyle(
+                            overlayColor:
+                                MaterialStateProperty.all(Colors.transparent),
+                            elevation: MaterialStateProperty.all(0),
+                            backgroundColor: MaterialStateProperty.all(
+                              theme.scaffoldBackgroundColor,
+                            ),
+                            foregroundColor: MaterialStateProperty.all(
+                              state.loopMode == LoopMode.loopOne
+                                  ? theme.accentColor
+                                  : Colors.black,
+                            ),
+                            shape: MaterialStateProperty.all(
+                              CircleBorder(),
+                            ),
                           ),
                         ),
                         Spacer(),
@@ -131,7 +196,6 @@ class _PlayerViewState extends State<PlayerView> {
           iconSize: 48,
           onPressed: () {
             cubit.play();
-            print("PLAY");
           },
           icon: Icon(
             Icons.play_arrow,

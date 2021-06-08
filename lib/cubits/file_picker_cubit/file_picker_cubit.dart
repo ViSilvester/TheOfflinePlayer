@@ -16,7 +16,6 @@ class FilePickerCubit extends Cubit<FilePickerCubitState> {
     }
 
     Directory dir = Directory('/storage/emulated/0/');
-    String mp3Path = dir.toString();
     List<FileSystemEntity> _files;
     List<FileSystemEntity> _songs = [];
     _files = dir.listSync(recursive: true, followLinks: false);
