@@ -15,13 +15,20 @@ class FilePickerCubit extends Cubit<FilePickerCubitState> {
       }
     }
 
-    Directory dir = Directory('/storage/emulated/0/');
     List<FileSystemEntity> _files;
     List<FileSystemEntity> _songs = [];
-    _files = dir.listSync(recursive: true, followLinks: false);
-    for (FileSystemEntity entity in _files) {
-      String path = entity.path;
-      if (path.endsWith('.mp3')) _songs.add(entity);
+
+    try {
+      Directory dir = Directory("/storage/emulated/0/download");
+      print(dir.path);
+      _files = dir.listSync(recursive: false, followLinks: false);
+      for (FileSystemEntity entity in _files) {
+        String path = entity.path;
+        if (path.endsWith('.mp3')) _songs.add(entity);
+      }
+    } catch (e) {
+      print(e);
+      return [];
     }
 
     return _songs;
